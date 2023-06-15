@@ -1,17 +1,14 @@
 package user.service;
 
+import core.response.MetadataDto;
+import core.response.PagedResponseDto;
 import io.quarkus.panache.common.Page;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import user.dto.MetadataDto;
-import user.dto.PagedResponseDto;
-import user.dto.PermissionDto;
 import user.dto.RoleDto;
-import user.entity.Permission;
 import user.entity.Role;
-import user.repository.PermissionRepository;
 import user.repository.RoleRepository;
 
 import java.util.HashMap;

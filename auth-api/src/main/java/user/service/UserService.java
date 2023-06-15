@@ -1,13 +1,12 @@
 package user.service;
 
+import core.response.MetadataDto;
+import core.response.PagedResponseDto;
 import io.quarkus.panache.common.Page;
-import io.quarkus.panache.common.Sort;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
-import user.dto.MetadataDto;
-import user.dto.PagedResponseDto;
 import user.dto.UserDto;
 import user.entity.Role;
 import user.entity.User;
@@ -19,7 +18,6 @@ import user.repository.UserRepository;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Stream;
 
 @ApplicationScoped
 @Slf4j

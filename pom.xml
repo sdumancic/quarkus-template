@@ -9,6 +9,7 @@
     <packaging>pom</packaging>
     <modules>
         <module>auth-api</module>
+        <module>core-lib</module>
     </modules>
     <properties>
         <compiler-plugin.version>3.11.0</compiler-plugin.version>
