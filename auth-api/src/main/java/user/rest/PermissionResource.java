@@ -1,5 +1,6 @@
 package user.rest;
 
+import auth.annotation.RequiresToken;
 import core.response.PagedResponseDto;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
@@ -32,6 +33,9 @@ public class PermissionResource {
 
     @GET
     @Path("/permissions")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    @RequiresToken
     public Response getPermissions(@QueryParam("code") String code, @DefaultValue("0") @QueryParam("page[index]") int pageIndex,@DefaultValue("10") @QueryParam("page[size]") int pageSize) {
         PagedResponseDto<List<PermissionDto>> response = permissionService.paginate(pageIndex,pageSize, code);
         return Response.ok().entity(response).build();

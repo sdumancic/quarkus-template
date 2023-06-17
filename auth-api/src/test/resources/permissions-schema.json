@@ -1,0 +1,126 @@
+{
+  "definitions": {},
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://example.com/object1686906172.json",
+  "title": "Root",
+  "type": "object",
+  "required": [
+    "data",
+    "metadata"
+  ],
+  "properties": {
+    "data": {
+      "$id": "#root/data",
+      "title": "Data",
+      "type": "array",
+      "default": [],
+      "items":{
+        "$id": "#root/data/items",
+        "title": "Items",
+        "type": "object",
+        "required": [
+          "id",
+          "code",
+          "description",
+          "dateCreated",
+          "dateModified"
+        ],
+        "properties": {
+          "id": {
+            "$id": "#root/data/items/id",
+            "title": "Id",
+            "type": "integer",
+            "examples": [
+              851
+            ],
+            "default": 0
+          },
+          "code": {
+            "$id": "#root/data/items/code",
+            "title": "Code",
+            "type": "string",
+            "default": "",
+            "examples": [
+              "USER_R"
+            ],
+            "pattern": "^.*$"
+          },
+          "description": {
+            "$id": "#root/data/items/description",
+            "title": "Description",
+            "type": "string",
+            "default": "",
+            "examples": [
+              "Read user"
+            ],
+            "pattern": "^.*$"
+          },
+          "dateCreated": {
+            "$id": "#root/data/items/dateCreated",
+            "title": "Datecreated",
+            "type": "null",
+            "default": null
+          },
+          "dateModified": {
+            "$id": "#root/data/items/dateModified",
+            "title": "Datemodified",
+            "type": "null",
+            "default": null
+          }
+        }
+      }
+
+    },
+    "metadata": {
+      "$id": "#root/metadata",
+      "title": "Metadata",
+      "type": "object",
+      "required": [
+        "page",
+        "pageSize",
+        "totalRecords",
+        "query"
+      ],
+      "properties": {
+        "page": {
+          "$id": "#root/metadata/page",
+          "title": "Page",
+          "type": "integer",
+          "examples": [
+            0
+          ],
+          "default": 0
+        },
+        "pageSize": {
+          "$id": "#root/metadata/pageSize",
+          "title": "Pagesize",
+          "type": "integer",
+          "examples": [
+            10
+          ],
+          "default": 0
+        },
+        "totalRecords": {
+          "$id": "#root/metadata/totalRecords",
+          "title": "Totalrecords",
+          "type": "integer",
+          "examples": [
+            4
+          ],
+          "default": 0
+        },
+        "query": {
+          "$id": "#root/metadata/query",
+          "title": "Query",
+          "type": "string",
+          "default": "",
+          "examples": [
+            "select p from Permission p where lower(p.code) like lower(:code) order by id asc"
+          ],
+          "pattern": "^.*$"
+        }
+      }
+    }
+
+  }
+}
