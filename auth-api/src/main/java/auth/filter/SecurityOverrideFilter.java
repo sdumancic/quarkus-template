@@ -3,6 +3,7 @@ package auth.filter;
 import auth.annotation.Permissions;
 import auth.annotation.RequiresToken;
 import auth.dto.CustomPrincipal;
+import auth.dto.CustomPrincipalImpl;
 import auth.dto.JwtResponseDto;
 import auth.exception.AuthException;
 import auth.service.AuthService;
@@ -13,6 +14,7 @@ import jakarta.ws.rs.container.ContainerRequestFilter;
 import jakarta.ws.rs.container.PreMatching;
 import jakarta.ws.rs.container.ResourceInfo;
 import jakarta.ws.rs.core.Context;
+import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.SecurityContext;
 import jakarta.ws.rs.ext.Provider;
 import lombok.SneakyThrows;
@@ -28,10 +30,7 @@ import java.lang.reflect.Method;
 public class SecurityOverrideFilter implements ContainerRequestFilter {
 
     @Context
-    private ResourceInfo resinfo;
-
-    @Inject
-    UserService userService;
+    ResourceInfo resinfo;
 
     @SneakyThrows
     @Override
@@ -42,32 +41,21 @@ public class SecurityOverrideFilter implements ContainerRequestFilter {
         if (resourceMethod.isAnnotationPresent(RequiresToken.class)){
             String xAuthToken = requestContext.getHeaders().getFirst("X-AUTH-TOKEN");
             if (xAuthToken == null) {
-                throw new AuthException("Header x-auth-token was not provided");
+                requestContext.abortWith(Response
+                        .status(Response.Status.UNAUTHORIZED)
+                        .entity("x-auth-token not provided").build());
+                return;
             }
 
             JwtResponseDto responseDto = AuthService.readJwt(xAuthToken);
             requestContext.setSecurityContext(new SecurityContext() {
                 @Override
                 public CustomPrincipal getUserPrincipal() {
-                    return new CustomPrincipal() {
-                        @Override
-                        public String getName() {
-                            return responseDto.getUsername();
-                        }
-                        @Override
-                        public String getFirstName() {
-                            return responseDto.getFirstName();
-                        }
-                        @Override
-                        public String getLastName() {
-                            return responseDto.getLastName();
-                        }
-                    };
+                    return new CustomPrincipalImpl(responseDto.getUsername(),responseDto.getFirstName(),responseDto.getLastName(),responseDto.getUserId());
                 }
 
                 @Override
                 public boolean isUserInRole(String r) {
-                    log.info("responseDto.getRoles() {} , {}" ,responseDto.getRoles(), r);
                     return responseDto.getRoles().contains(r);
 
                 }
@@ -83,38 +71,10 @@ public class SecurityOverrideFilter implements ContainerRequestFilter {
                 }
             });
 
-            if (resourceMethod.isAnnotationPresent(Permissions.class)){
-                Permissions annotation = resourceMethod.getAnnotation(Permissions.class);
-                String[] values = annotation.value();
-                if (!this.userHasPermissions(responseDto.getUserId(), values, annotation.inclusive())){
-                    throw new AuthException("User does not have permission");
-                }
-            }
         }
 
 
     }
 
-    private boolean userHasPermissions(Long userId, String[] values, boolean inclusive) {
-        log.info("values {}, inclusive {}",values, inclusive);
-        if (inclusive){
-            boolean userHasPermissions = true;
-            for (String code: values){
-                if (!this.userService.userHasPermission(userId, code)){
-                    userHasPermissions = false;
-                    break;
-                }
-            }
-            return userHasPermissions;
-        } else {
-            boolean userHasPermissions = false;
-            for (String code: values){
-                if (this.userService.userHasPermission(userId, code)){
-                    userHasPermissions = true;
-                    break;
-                }
-            }
-            return userHasPermissions;
-        }
-    }
+
 }

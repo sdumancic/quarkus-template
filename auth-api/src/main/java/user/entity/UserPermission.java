@@ -80,4 +80,11 @@ public class UserPermission{
         user.getUserPermissions().add(this);
         permission.getUserPermissions().add(this);
     }
+
+    @Override
+    public String toString() {
+        return "UserPermission{" +
+                "id=" + id +
+                '}';
+    }
 }

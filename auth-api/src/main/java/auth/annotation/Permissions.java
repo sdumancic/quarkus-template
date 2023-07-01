@@ -2,6 +2,9 @@ package auth.annotation;
 
 
 
+import jakarta.enterprise.util.Nonbinding;
+import jakarta.interceptor.InterceptorBinding;
+
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Repeatable;
@@ -13,14 +16,13 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.TYPE, ElementType.METHOD})
 @Repeatable(Permissions.List.class)
+@InterceptorBinding
 public @interface Permissions {
-    String AUTODETECTED = "<<autodetected>>";
-    String PERMISSION_TO_ACTION_SEPARATOR = ":";
 
+    @Nonbinding
     String[] value();
 
-    String[] params() default {"<<autodetected>>"};
-
+    @Nonbinding
     boolean inclusive();
 
     @Target({ElementType.METHOD})

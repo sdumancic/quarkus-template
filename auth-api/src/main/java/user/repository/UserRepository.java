@@ -2,7 +2,9 @@ package user.repository;
 
 import io.quarkus.elytron.security.common.BcryptUtil;
 import io.quarkus.hibernate.orm.panache.PanacheRepository;
+import jakarta.ejb.ApplicationException;
 import jakarta.enterprise.context.ApplicationScoped;
+import org.apache.commons.lang3.RandomUtils;
 import user.entity.Role;
 import user.entity.User;
 
@@ -21,6 +23,8 @@ public class UserRepository implements PanacheRepository<User> {
      * @param password the unencrypted password (it will be encrypted with bcrypt)
      */
     public User create(String username, String password, String firstName, String lastName, List<Role> roles) {
+
+
         User user = new User();
         user.username = username;
         user.hashedPassword = BcryptUtil.bcryptHash(password);
