@@ -6,10 +6,12 @@ import auth.dto.CustomPrincipal;
 import auth.dto.CustomPrincipalImpl;
 import auth.dto.LoginRequestDto;
 import auth.dto.LoginResponseDto;
+import auth.event.UserLoggedIn;
 import auth.exception.AuthException;
 import auth.service.AuthService;
 import io.quarkus.security.identity.SecurityIdentity;
 import jakarta.annotation.security.PermitAll;
+import jakarta.enterprise.event.Event;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.container.ContainerRequestContext;
@@ -29,6 +31,9 @@ public class AuthResource {
     @Context
     ContainerRequestContext requestContext;
 
+    @Inject
+    Event<UserLoggedIn> userLoggedInEvent;
+
     @POST
     @PermitAll
     @Path("/login")
@@ -37,6 +42,7 @@ public class AuthResource {
     public Response login(LoginRequestDto request){
         try {
             LoginResponseDto responseDto = this.authService.login(request.getUsername(), request.getPassword());
+            userLoggedInEvent.fireAsync(new UserLoggedIn(responseDto.getUserId(), responseDto.getUsername(), responseDto.getFirstName(), responseDto.getLastName()));
             return Response.ok().entity(responseDto).build();
         } catch (BadRequestException | AuthException ex){
             return Response.status(Response.Status.BAD_REQUEST).entity(ex.getMessage()).build();

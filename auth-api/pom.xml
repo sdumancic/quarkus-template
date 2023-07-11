@@ -8,6 +8,12 @@
     <version>1.0-SNAPSHOT</version>
   </parent>
   <artifactId>auth-api</artifactId>
+  <properties>
+    <jooq.efit.generator.skip>false</jooq.efit.generator.skip>
+    <generated.directory>src\main\java\</generated.directory>
+    <generated.efit.packageName>db</generated.efit.packageName>
+  </properties>
+
   <dependencies>
     <dependency>
       <groupId>io.quarkus</groupId>
@@ -41,6 +47,21 @@
       <groupId>io.quarkus</groupId>
       <artifactId>quarkus-security-jpa</artifactId>
     </dependency>
+
+    <dependency>
+      <groupId>org.jooq</groupId>
+      <artifactId>jooq</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.jooq</groupId>
+      <artifactId>jooq-meta</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.jooq</groupId>
+      <artifactId>jooq-codegen</artifactId>
+    </dependency>
+
     <dependency>
       <groupId>io.jsonwebtoken</groupId>
       <artifactId>jjwt-api</artifactId>
@@ -155,6 +176,50 @@
           </execution>
         </executions>
       </plugin>
+
+      <plugin>
+
+        <groupId>org.jooq</groupId>
+        <artifactId>jooq-codegen-maven</artifactId>
+        <version>3.18.5</version>
+
+        <executions>
+          <execution>
+            <id>jooq-codegen</id>
+            <phase>generate-sources</phase>
+            <goals>
+              <goal>generate</goal>
+            </goals>
+          </execution>
+
+        </executions>
+
+        <configuration>
+          <skip>${jooq.efit.generator.skip}</skip>
+          <jdbc>
+            <driver>org.postgresql.Driver</driver>
+            <url>jdbc:postgresql://localhost:5432/postgres</url>
+            <user>docker</user>
+            <password>docker</password>
+          </jdbc>
+          <generator>
+            <database>
+              <includes/>
+              <excludes/>
+              <inputSchema>public</inputSchema>
+            </database>
+            <generate>
+              <javaTimeTypes>true</javaTimeTypes>
+              <newline>\r\n</newline>
+            </generate>
+            <target>
+              <packageName>${generated.efit.packageName}</packageName>
+              <directory>${generated.directory}</directory>
+            </target>
+          </generator>
+        </configuration>
+      </plugin>
+
     </plugins>
   </build>
   <profiles>

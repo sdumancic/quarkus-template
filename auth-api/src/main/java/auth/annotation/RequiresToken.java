@@ -10,5 +10,4 @@ import java.lang.annotation.*;
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.TYPE, ElementType.METHOD})
-@InterceptorBinding
 public @interface RequiresToken {}

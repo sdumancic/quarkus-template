@@ -45,7 +45,12 @@ public class UserResource {
     @GET
     @Path("/users")
     public Response getUsers(String name) {
-        PagedResponseDto<List<UserDto>> response = userService.paginate(0,5);
+        PagedResponseDto<List<UserDto>> response = null;
+        try {
+            response = userService.paginate(0,5);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
         return Response.ok().entity(response).build();
     }
 

@@ -8,6 +8,7 @@ import auth.dto.JwtResponseDto;
 import auth.exception.AuthException;
 import auth.service.AuthService;
 import jakarta.annotation.Priority;
+import jakarta.ejb.ApplicationException;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.container.ContainerRequestContext;
 import jakarta.ws.rs.container.ContainerRequestFilter;
