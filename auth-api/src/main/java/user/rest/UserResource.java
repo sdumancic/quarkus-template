@@ -1,7 +1,6 @@
 package user.rest;
 
 import core.response.PagedResponseDto;
-import jakarta.ejb.Stateless;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.*;
@@ -11,6 +10,7 @@ import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.UriInfo;
 import lombok.extern.slf4j.Slf4j;
 import user.dto.UserDto;
+import user.entity.User;
 import user.service.UserGenerationService;
 import user.service.UserService;
 
@@ -41,7 +41,6 @@ public class UserResource {
     }
 
 
-
     @GET
     @Path("/users")
     public Response getUsers(String name) {
@@ -63,6 +62,13 @@ public class UserResource {
         URI uri = uriInfo.getBaseUriBuilder().path(UserResource.class).path(UserResource.class,"createFiveUsers").build();
         userGenerationService.createFiveUsers();
         return Response.created(uri).entity(uri).build();
+    }
+
+    @GET
+    @Path("/criteria/1")
+    public Response criteriaQuery1() {
+        List<UserDto> response = userService.criteriaQuery1();
+        return Response.ok().entity(response).build();
     }
 
 

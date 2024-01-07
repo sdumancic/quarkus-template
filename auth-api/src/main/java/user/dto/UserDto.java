@@ -20,7 +20,7 @@ public class UserDto {
     private String lastName;
     @JsonIgnore
     private String password;
-    @JsonIgnore
+
     private List<String> roles;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime dateCreated;

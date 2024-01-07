@@ -9,7 +9,7 @@
   </parent>
   <artifactId>auth-api</artifactId>
   <properties>
-    <jooq.efit.generator.skip>false</jooq.efit.generator.skip>
+    <jooq.efit.generator.skip>true</jooq.efit.generator.skip>
     <generated.directory>src\main\java\</generated.directory>
     <generated.efit.packageName>db</generated.efit.packageName>
   </properties>
@@ -114,7 +114,6 @@
         <groupId>org.apache.commons</groupId>
         <artifactId>commons-lang3</artifactId>
       </dependency>
-
     <dependency>
       <groupId>com.example</groupId>
       <artifactId>core-lib</artifactId>

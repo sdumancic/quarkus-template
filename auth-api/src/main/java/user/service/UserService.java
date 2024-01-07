@@ -7,6 +7,12 @@ import io.agroal.api.AgroalDataSource;
 import io.quarkus.panache.common.Page;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import jakarta.persistence.TypedQuery;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.JoinType;
+import jakarta.persistence.criteria.Path;
+import jakarta.persistence.criteria.Root;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -63,8 +69,13 @@ public class UserService {
 
     public PagedResponseDto<List<UserDto>> paginate(int pageIndex, int pageSize) throws InterruptedException {
 
+        Condition cond =
+                USER.FIRST_NAME.like("John%")
+                  .or(     USER.LAST_NAME.like("Black%")
+                      .and(USER.USERNAME.eq("ADMIN").or(USER.USERNAME.eq("SUPERUSER")))
+                     );
 
-       // DSLContext dslContext = DSL.using(dataSource, SQLDialect.POSTGRES, new Settings().withRenderFormatted(true));
+        // DSLContext dslContext = DSL.using(dataSource, SQLDialect.POSTGRES, new Settings().withRenderFormatted(true));
 
         Condition firstCondition = DSL.lower(USER.FIRST_NAME).like("a%");
         Condition secondCondition = DSL.lower(USER.LAST_NAME).like("a%");
@@ -159,4 +170,21 @@ public class UserService {
         return userRepository.findByUsername(username);
     }
 
+    public List<UserDto> criteriaQuery1() {
+        CriteriaBuilder builder = userRepository.getEntityManager().getCriteriaBuilder();
+        CriteriaQuery<User> criteriaQuery = builder.createQuery(User.class);
+        Root<User> root = criteriaQuery.from(User.class);
+        root.join("roles", JoinType.LEFT);
+        Path<Long> id = root.get("id");
+        Path<Object> username = root.get("username");
+        Path<Object> firstName = root.get("firstName");
+        Path<Object> lastName = root.get("lastName");
+        Path<Object> roles = root.get("roles");
+        criteriaQuery
+                //.select(builder.construct(UserDto.class, root.get("id"), root.get("username"),root.get("firstName"),root.get("lastName"), root.get("dateCreated"), root.get("dateModified")))
+                .where(builder.or(builder.equal(root.get("username"), "user")
+                      ,             builder.like(root.get("firstName"), "A%")));
+        TypedQuery<User> query = userRepository.getEntityManager().createQuery(criteriaQuery);
+        return mapToDto(query.getResultList());
+    }
 }

@@ -75,6 +75,7 @@
                 <artifactId>jooq-codegen</artifactId>
                 <version>3.18.5</version>
             </dependency>
+
         </dependencies>
 
     </dependencyManagement>
@@ -83,5 +84,6 @@
     <modules>
         <module>auth-api</module>
         <module>core-lib</module>
+        <module>desk-reservation</module>
     </modules>
 </project>

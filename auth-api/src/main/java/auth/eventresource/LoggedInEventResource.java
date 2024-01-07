@@ -30,7 +30,7 @@ public class LoggedInEventResource {
     private List<UserLoggedIn> allLogins = new ArrayList<>();
 
     @PostConstruct
-    private void initSseBroadcaster(){
+    void initSseBroadcaster(){
         sseBroadcaster = sse.newBroadcaster();
     }
 
