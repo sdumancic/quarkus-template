@@ -26,6 +26,7 @@ public class WalkAroundCheckService {
     String htmlFilePath;
 
     public String loadTemplateAndReplacePlaceholders() throws IOException {
+        log.info("htmlFilePath {}", htmlFilePath);
         String templateSource = new String(Files.readAllBytes(Paths.get(htmlFilePath)), StandardCharsets.UTF_8);
         Handlebars handlebars = new Handlebars();
         handlebars.registerHelpers(StringHelpers.class);

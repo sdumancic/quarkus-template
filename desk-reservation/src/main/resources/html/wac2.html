@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Walk Around Check</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        h2 {
+            color: #333;
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .section {
+            width: 1000px;
+            background-color: #356cc7;
+            color: white;
+            margin: 25px 0;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .table-container {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #1c3b6b;
+        }
+
+
+    </style>
+</head>
+<body>
+
+<h2>WALK AROUND CHECK</h2>
+
+<div class="section">
+    <h3>WORKORDER INFORMATION</h3>
+    <div class="table-container">
+        <table>
+            <thead>
+            <tr>
+                <th>Order Number</th>
+                <th>Drop off Date</th>
+                <th>Pickup Date</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>{{orderNumber}}</td>
+                <td>{{dropofDate}}</td>
+                <td>{{pickupDate}}</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="section">
+    <h3>USER INFORMATION</h3>
+    <div class="table-container">
+        <table>
+            <thead>
+            <tr>
+                <th>Name</th>
+                <th>Surname</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>{{userName}}</td>
+                <td>{{userSurname}}</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- ... (Previous HTML Code) ... -->
+
+<div class="section">
+    <h3>DEALER INFORMATION</h3>
+    <div class="table-container">
+        <table>
+            <thead>
+            <tr>
+                <th>Name</th>
+                <th>City</th>
+                <th>Address</th>
+                <th>ZIP Code</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>{{dealerName}}</td>
+                <td>{{dealerCity}}</td>
+                <td>{{dealerAddress}}</td>
+                <td>{{dealerZipcode}}</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="section">
+    <h3>VEHICLE INFORMATION</h3>
+    <div class="table-container">
+        <table>
+            <thead>
+            <tr>
+                <th>License Plate</th>
+                <th>Brand</th>
+                <th>Model</th>
+                <th>Mileage</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>{{vehicleLicencePlate}}</td>
+                <td>{{vehicleBrand}}</td>
+                <td>{{vehicleModel}}</td>
+                <td>{{vehicleMileage}}</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="section">
+    <h3>CUSTOMER INFORMATION</h3>
+    <div class="table-container">
+        <table>
+            <thead>
+            <tr>
+                <th>Name</th>
+                <th>Surname</th>
+                <th>Email</th>
+                <th>Phone</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>{{customerName}}</td>
+                <td>{{customerSurname}}</td>
+                <td>{{customerEmail}}</td>
+                <td>{{customerPhone}}</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="section">
+    <h3>WAC INFORMATION</h3>
+    <div class="table-container">
+        <table>
+            <thead>
+            <tr>
+                <th style="width: 25%;">Name</th>
+                <th style="width: 15%;">Status</th>
+                <th style="width: 60%;">Description</th>
+            </tr>
+            </thead>
+            <tbody>
+            {{#each items}}
+            <tr style="border-bottom:1px solid lightgrey;text-align:left;">
+                <td style="padding: 0 15px 0 0;">{{name}}</td>
+                {{#equals status 'NOT_OK'}}
+                <td style="background-color:red; text-align:center;">NOT OK</td>
+                <td style="padding: 0px 0px 0px 5px;">
+                    {{#each repairs}}
+                    <p><strong>{{name}}</strong> <br/>{{description}} <br/> <strong>Price:</strong>
+                        {{price}} CHF
+                    </p>
+                    {{/each}}
+                </td>
+                {{/equals}}
+                {{#equals status 'OK'}}
+                <td style="background-color:green; text-align:center;">OK</td>
+                {{/equals}}
+            </tr>
+            {{/each}}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+</body>
+</html>
+
+

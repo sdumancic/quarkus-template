@@ -34,15 +34,18 @@ public class GeneratePdfResource {
     public Response exportWac() throws IOException {
         String content = wacService.loadTemplateAndReplacePlaceholders();
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+
         PdfRendererBuilder builder = new PdfRendererBuilder();
         builder.useFastMode();
+        builder.useDefaultPageSize(297, 420, PdfRendererBuilder.PageSizeUnits.MM);
+
         builder.withHtmlContent(content, null);
-        builder.testMode(true);
+        builder.testMode(false);
         builder.toStream(outputStream);
         builder.run();
         outputStream.close();
         return Response.ok(outputStream.toByteArray())
-                .header("content-disposition", "attachment; filename = mockFile.pdf")
+                .header("content-disposition", "attachment; filename = wac.pdf")
                 .build();
     }
 
